@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>短连接转换长连接</title>
+    <link rel="stylesheet" href="./css/index.min.css">
+</head>
+
+<body>
+    <div class="box">
+        <div class="left">
+            <label for="short">短连接</label>
+            <textarea id="short" name="short"></textarea>
+        </div>
+        <div class="right">
+            <label for="long">长连接</label>
+            <textarea id="long"></textarea>
+        </div>
+    </div>
+    <button id="reset" class="btn-1">重置</button>
+    <button id="exchange" class="btn-2">转换</button>
+    <button id="copy" class="btn-3">复制长链接内容</button>
+    <p>goodid</p>
+    <p id="goodid"></p>
+    <div class="mask">
+        <ul class="top">
+            <li style="--i:1"></li>
+            <li style="--i:2"></li>
+            <li style="--i:3"></li>
+            <li style="--i:4"></li>
+            <li style="--i:5"></li>
+        </ul>
+    </div>
+</body>
+<script src="./js/index.js"></script>
+
+</html>
