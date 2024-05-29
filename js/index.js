@@ -20,11 +20,19 @@ reset.addEventListener("click", () => {
     goodid.innerText = '';
 })
 // 转换
-exchange.addEventListener("click", async () => {
+exchange.addEventListener("click", async (event) => {
+    const isHost = Boolean(event.target.dataset.host);
     mask.style.display = 'block';
-    const arr = short.value.split(/\s+/);
     long.value = '';
     goodid.innerText = '';
+    const arr = short.value.split(/\s+/);
+    if (arr.length >= 15 && !isHost) {
+        setTimeout(() => {
+            alert("最多15条");
+            mask.style.display = 'none';
+        }, 1000)
+        return;
+    }
     try {
         const res = await concurRequest('https://www.bejson.com/Bejson/Api/ShortUrl/restoreShortUrl', arr, 20);
         long.value = res.join('\n');
