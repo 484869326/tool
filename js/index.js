@@ -2,13 +2,17 @@ const short = document.querySelector("#short");
 const long = document.querySelector("#long");
 const reset = document.querySelector("#reset");
 const exchange = document.querySelector("#exchange");
-const goodid = document.querySelector("#goodid");
+const goodid = document.querySelector("#goodid") || {};
 const mask = document.querySelector(".mask");
 const copy = document.querySelector("#copy");
 //复制
-copy.addEventListener('click', () => {
-    navigator.clipboard.writeText(long.value);
-})
+try {
+    copy.addEventListener('click', () => {
+        navigator.clipboard.writeText(long.value);
+    })
+} catch (error) {
+
+}
 //重置
 reset.addEventListener("click", () => {
     short.value = '';
