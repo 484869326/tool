@@ -26,7 +26,7 @@ exchange.addEventListener("click", async (event) => {
     long.value = '';
     goodid.innerText = '';
     const arr = short.value.split(/\s+/);
-    if (arr.length >= 15 && !isHost) {
+    if (arr.length > 15 && !isHost) {
         setTimeout(() => {
             alert("最多15条");
             mask.style.display = 'none';
