@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>筛选包含 https 的请求</title>
+	</head>
+	<body>
+		<textarea id="inputTextArea" rows="25" cols="150"></textarea>
+		<textarea id="outputTextArea" rows="25" cols="150" readonly></textarea>
+
+		<script>
+			const inputTextArea = document.getElementById('inputTextArea');
+			const outputTextArea = document.getElementById('outputTextArea');
+			const http = 'https://furniture-server-phi.vercel.app/api';
+
+			function useFetch(config) {
+
+				return new Promise(async (resolve, reject) => {
+					try {
+						const {
+							url,
+							body,
+							...other
+						} = config;
+						const response = await fetch(url, {
+							body: JSON.stringify(body),
+							...other
+						});
+						const res = await response.json();
+						resolve(res)
+					} catch (e) {
+						//TODO handle the exception
+						reject(e);
+					}
+				})
+			}
+			inputTextArea.addEventListener('input', async function() {
+				const inputText = inputTextArea.value;
+				if (inputText) {
+					const {
+						data,
+						filePath
+					} = await useFetch({
+						url: `${http}/record`,
+						method: 'post',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: {
+							shortUrl: inputText
+						}
+					});
+					if (data.length !== 0) {
+						outputTextArea.value = data.join('\n');
+						downloadFile(filePath)
+					} else {
+						outputTextArea.value = '';
+					}
+				}
+
+			});
+
+			function downloadFile(filePath) {
+				fetch(`${http}/download`, {
+						method: 'post',
+						body: JSON.stringify({
+							filePath
+						}),
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					})
+					.then(response => response.blob())
+					.then(blob => {
+						const url = window.URL.createObjectURL(new Blob([blob]));
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = filePath;
+						a.name = filePath;
+						a.click();
+						window.URL.revokeObjectURL(url);
+					})
+					.catch(error => console.error('Error downloading file:', error));
+			}
+		</script>
+	</body>
+</html>
