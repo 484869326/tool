@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>筛选包含 https 的请求</title>
+		<meta charset="utf-8">
+		<title></title>
 	</head>
 	<body>
-		<textarea id="inputTextArea" rows="25" cols="150"></textarea>
-		<textarea id="outputTextArea" rows="25" cols="150" readonly></textarea>
-
+		<input id="dateInput" type="date" />
+		<button id='download'>下载</button>
+		<br>
+		<textarea id="textArea" rows="25" cols="150"></textarea>
 		<script>
-			const inputTextArea = document.getElementById('inputTextArea');
-			const outputTextArea = document.getElementById('outputTextArea');
+			const dateInput = document.getElementById('dateInput');
+			const textArea = document.getElementById('textArea');
+			const download = document.getElementById('download');
 			const http = 'https://furniture-server-phi.vercel.app/api';
 			// const http = 'http://localhost:3000/api';
 
@@ -33,31 +36,30 @@
 					}
 				})
 			}
-			inputTextArea.addEventListener('input', async function() {
-				const inputText = inputTextArea.value;
-				if (inputText) {
-					const {
-						data,
-						filePath
-					} = await useFetch({
-						url: `${http}/record`,
-						method: 'post',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: {
-							shortUrl: inputText
-						}
-					});
-					if (data.length !== 0) {
-						outputTextArea.value = data.join('\n');
-						downloadFile(filePath)
-					} else {
-						outputTextArea.value = '';
-					}
-				}
-
+			dateInput.addEventListener('input', async function(event) {
+				const selectedDate = event.target.value.replace(/-/g, '');
+				const {
+					data
+				} = await useFetch({
+					url: `${http}/statistics`,
+					method: 'post',
+					body: {
+						filePath: selectedDate
+					},
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+				textArea.value = data ?? '暂无内容';
 			});
+			download.addEventListener('click', () => {
+				const filePath = dateInput.value.replace(/-/g, '') + '.txt';
+				if (filePath) {
+					downloadFile(filePath)
+				} else {
+					alert('请先选择时间')
+				}
+			})
 
 			function downloadFile(filePath) {
 				fetch(`${http}/download`, {
