@@ -37,23 +37,23 @@
 				})
 			}
 			dateInput.addEventListener('input', async function(event) {
-				const selectedDate = event.target.value.replace(/-/g, '');
+				const selectedDate = event.target.value;
 				const {
 					data
 				} = await useFetch({
 					url: `${http}/statistics`,
 					method: 'post',
 					body: {
-						filePath: selectedDate
+						date: selectedDate
 					},
 					headers: {
 						'Content-Type': 'application/json',
 					},
 				});
-				textArea.value = data ?? '暂无内容';
+				textArea.value = data || '暂无内容';
 			});
 			download.addEventListener('click', () => {
-				const filePath = dateInput.value.replace(/-/g, '') + '.txt';
+				const filePath = dateInput.value;
 				if (filePath) {
 					downloadFile(filePath)
 				} else {
