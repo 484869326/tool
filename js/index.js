@@ -5,7 +5,7 @@ const exchange = document.querySelector("#exchange");
 const goodid = document.querySelector("#goodid") || {};
 const mask = document.querySelector(".mask");
 const copy = document.querySelector("#copy");
-const http = 'https://furniture-server-phi.vercel.app/api';
+const http = 'https://jie.lovewx.cc/api';
 // const http = 'http://localhost:3000/api';
 //复制
 try {
